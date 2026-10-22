@@ -266,7 +266,7 @@ function subBody(r){
     '<textarea class="note" placeholder="Свои заметки, ссылки, выводы…"' + (nv ? "" : " hidden") + ">" + esc(nv) + "</textarea>";
   return h;
 }
-const REPO = "https://github.com/UbicaSmerti228/1c-roadmap";
+const REPO = "https://github.com/UbicaSmerti228/1C-roadmap";
 const topicURL = k => location.origin + location.pathname + "#" + k;
 // готовый issue на GitHub: тема и ссылка уже подставлены
 function issueURL(r){

@@ -165,7 +165,7 @@ test("«Сообщить об ошибке» ведёт на готовый issu
   const app = await load();
   app.RM.goto("qry.qjoin");
   const a = app.$('.sub-f a.note-btn', sub(app, "qry.qjoin"));
-  assert(a.href.startsWith("https://github.com/UbicaSmerti228/1c-roadmap/issues/new?"), a.href);
+  assert(a.href.startsWith("https://github.com/UbicaSmerti228/1C-roadmap/issues/new?"), a.href);
   const params = new URL(a.href).searchParams;
   assert(params.get("title").includes("Соединения"), "заголовок: " + params.get("title"));
   assert(params.get("body").includes("qry.qjoin"), "тело: " + params.get("body"));

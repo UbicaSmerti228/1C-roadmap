@@ -21,10 +21,23 @@ jobs:
   links:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Ссылки и видео
         run: python3 scripts/check_links.py
       - name: Заголовки страниц (для сверки с подписями в карте)
         if: always()
-        run: python3 scripts/check_links.py --titles
+        run: python3 scripts/check_links.py --titles | tee titles.txt
+      - name: Отчёт в ветку link-report (при ручном запуске)
+        if: always() && github.event_name == 'workflow_dispatch'
+        run: |
+          python3 scripts/check_links.py > links.txt || true
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git checkout --orphan link-report
+          git rm -rf --cached . > /dev/null
+          git add links.txt titles.txt
+          git commit -m "Отчёт проверки ссылок"
+          git push -f origin link-report
