@@ -1,0 +1,30 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 1 * *" # 1-го числа каждого месяца
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Структура data.js
+        run: python3 scripts/validate.py
+      - name: Тесты сайта в браузере
+        run: BROWSER=google-chrome python3 tests/run.py
+
+  links:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ссылки и видео
+        run: python3 scripts/check_links.py
+      - name: Заголовки страниц (для сверки с подписями в карте)
+        if: always()
+        run: python3 scripts/check_links.py --titles
